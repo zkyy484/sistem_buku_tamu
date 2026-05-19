@@ -1,134 +1,3 @@
-{{-- <!DOCTYPE html>
-<html>
-
-<head>
-
-    <title>Hasil Konsultasi</title>
-
-</head>
-
-<body>
-
-    <h2>Hasil Konsultasi</h2>
-
-    <hr>
-
-    <table cellpadding="8">
-
-        <tr>
-            <td>Kode Tiket</td>
-            <td>:</td>
-            <td>{{ $konsultasi->kode_tiket }}</td>
-        </tr>
-
-        <tr>
-            <td>Hari/Tanggal</td>
-            <td>:</td>
-            <!-- Hasil contoh: selasa/19/05/2026 -->
-            <td>{{ Str::lower($konsultasi->created_at->format('d/m/Y') )}}
-            </td>
-        </tr>
-
-        <tr>
-            <td>Waktu</td>
-            <td>:</td>
-            <!-- Hasil contoh: 13:00 WITA -->
-            <td>{{ $konsultasi->created_at->format('H:i') }} WITA</td>
-        </tr>
-
-        <tr>
-            <td>Instansi/Nama Perusahaan</td>
-            <td>:</td>
-            <td>{{ $konsultasi->nama_perusahaan_instansi }}</td>
-        </tr>
-
-        <tr>
-            <td>Nama</td>
-            <td>:</td>
-            <td>{{ $konsultasi->nama_lengkap }}</td>
-        </tr>
-
-        <tr>
-            <td>Email</td>
-            <td>:</td>
-            <td>{{ $konsultasi->email }}</td>
-        </tr>
-
-        <tr>
-            <td>Tujuan Konsultasi</td>
-            <td>:</td>
-            <td>{{ $konsultasi->tujuan->tujuan_konsultasi }}</td>
-        </tr>
-
-        <tr>
-            <td>Kendala/Permasalahan</td>
-            <td>:</td>
-            <td>{{ $konsultasi->permasalahan }}</td>
-        </tr>
-
-        <tr>
-            <td>Solusi</td>
-            <td>:</td>
-            <td>{{ $konsultasi->solusi }}</td>
-        </tr>
-
-
-    </table>
-
-    <br><br>
-
-    <br><br>
-
-    <table width="100%">
-
-        <tr>
-
-            <td align="center">
-
-                Yang Hadir
-
-                <br><br>
-
-                @if ($konsultasi->ttd_tamu)
-                    <img src="{{ $konsultasi->ttd_tamu }}" width="200">
-                @endif
-
-                <br><br><br>
-
-                <hr width="200">
-                <b>
-                    ({{ $konsultasi->nama_lengkap }})
-                </b>
-
-            </td>
-
-
-            <td align="center">
-
-                Penerima
-
-                <br><br>
-
-                @if ($konsultasi->ttd_pegawai)
-                    <img src="{{ $konsultasi->ttd_pegawai }}" width="200">
-                @endif
-
-                <br><br><br>
-
-                <hr width="200">
-                <b>
-                    ({{ $konsultasi->pegawai->nama_pegawai ?? '-' }})
-                </b>
-
-            </td>
-
-        </tr>
-
-    </table>
-
-</body>
-
-</html> --}}
 <!DOCTYPE html>
 <html>
 
@@ -198,8 +67,7 @@
         /* Area Tanda Tangan */
         .table-ttd {
             width: 100%;
-            margin-top: 50px;
-            /* Menambah jarak antara tabel konten dengan seluruh area TTD */
+            margin-top: 30px;
         }
 
         .table-ttd td {
@@ -208,31 +76,23 @@
             vertical-align: top;
         }
 
-        /* Mengatur jarak box tanda tangan (Atas & Bawah) */
         .space-ttd {
-            height: 75px;
-            /* Tinggi area TTD dinaikkan agar lebih lega */
-            margin-top: 15px;
-            /* Jarak antara teks "Yang Hadir/Penerima" dengan GAMBAR TTD */
-            margin-bottom: 14px;
-            /* Jarak antara GAMBAR TTD dengan TEKS NAMA */
-
-            /* Memastikan gambar tetap berada di tengah secara vertikal & horizontal */
-            display: block;
-            text-align: center;
+            height: 80px;
+            /* Ruang kosong jika gambar TTD tidak ada */
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        /* Mengatur ukuran gambar TTD agar proporsional di dalam space */
         .img-ttd {
-            max-width: 180px;
-            height: 90px;
+            max-width: 150px;
+            height: 70px;
             object-fit: contain;
         }
 
         .nama-ttd {
             text-decoration: underline;
             font-weight: bold;
-            margin-top: 5px;
         }
     </style>
 </head>
@@ -256,7 +116,7 @@
         <tr>
             <td class="label">Hari / Tanggal</td>
             <td class="separator">:</td>
-            <td>{{ Str::lower($konsultasi->created_at->format('d/m/Y')) }}</td>
+            <td>{{ Str::lower($konsultasi->created_at->format('d/m/Y') )}}</td>
         </tr>
         <tr>
             <td class="label">Waktu</td>
@@ -298,24 +158,20 @@
     <table class="table-ttd">
         <tr>
             <td>
-                Yang Hadir
+                Tanda Tangan Tamu
                 <div class="space-ttd">
                     @if ($konsultasi->ttd_tamu)
-                        <img src="{{ $konsultasi->ttd_tamu }}" class="img-ttd">
-                    @else
-                        <div style="height: 90px;"></div>
+                    <img src="{{ $konsultasi->ttd_tamu }}" width="200">
                     @endif
                 </div>
                 <div class="nama-ttd">({{ $konsultasi->nama_lengkap }})</div>
             </td>
 
             <td>
-                Penerima
+                Tanda Tangan Pegawai
                 <div class="space-ttd">
                     @if ($konsultasi->ttd_pegawai)
-                        <img src="{{ $konsultasi->ttd_pegawai }}" class="img-ttd">
-                    @else
-                        <div style="height: 90px;"></div>
+                    <img src="{{ $konsultasi->ttd_pegawai }}" width="200">
                     @endif
                 </div>
                 <div class="nama-ttd">({{ $konsultasi->pegawai->nama_pegawai ?? '-' }})</div>

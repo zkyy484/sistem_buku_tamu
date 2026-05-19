@@ -3,54 +3,51 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Tamu;
-use App\Models\User;
+use App\Models\TujuanKonsultasi;
 use App\Models\SubBagian;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
+    // Fungsi untuk menampilkan halaman dashboard pada admin
     public function index()
     {
-        // 1. Akumulasi data tipe pelaku usaha / jenis instansi dari tabel tamu
-        $totalPelakuUsaha = Tamu::where('pelaku_usaha', 'Pelaku Usaha')->count();
-        $totalInstansiPemerintah = Tamu::where('pelaku_usaha', 'Instansi Pemerintah')->count();
+        // 1. Akumulasi Tamu berdasarkan Tujuan Konsultasi
+        $tujuanChart = TujuanKonsultasi::withCount('tamu')->get();
 
-        // 2. Total Konsultan / Tamu berdasarkan status operasionalnya
+        // 2. Akumulasi Tamu berdasarkan Sub Bagian (Pegawai)
+        $subBagianChart = SubBagian::withCount([
+            'pegawai as total_tamu' => function ($query) {
+                $query->join('tamu', 'data_pegawai.id_pegawai', '=', 'tamu.id_pegawai');
+            }
+        ])->get();
+
+        // 3. Akumulasi Persentase BERDASARKAN STATUS TAMU
+        // Query ini menghitung total tamu per status yang ada di database
+        $statusChart = Tamu::select('status', DB::raw('count(*) as total'))
+            ->groupBy('status')
+            ->get();
+
+        // 4. Counter Tambahan Info Box
         $totalTamu = Tamu::count();
-        $totalTamuSelesai = Tamu::where('status', 'Selesai')->count();
-        $totalTamuProses = Tamu::where('status', 'Diproses')->count();
+        $tamuSelesai = Tamu::where('status', 'Selesai')->count(); // Disesuaikan dengan status selesai
+        $tamuPending = Tamu::whereIn('status', ['Belum Eskalasi'])->count();
 
-        // 3. Jumlah akun berdasarkan Role Akses Pegawai dan Pimpinan dari tabel users
-        // Query ini mencantolkan (join) tabel role_akses untuk memfilter berdasarkan string nama_role ('pegawai' / 'pimpinan')
-        $totalPegawai = User::whereNotNull('id_pegawai')
-            ->whereHas('role', function ($query) {
-                $query->where('nama_role', 'pegawai');
-            })->count();
-
-        $totalPimpinan = User::whereNotNull('id_pegawai')
-            ->whereHas('role', function ($query) {
-                $query->where('nama_role', 'pimpinan');
-            })->count();
-
-        // 4. Query Grafik: Menghitung jumlah tamu yang sukses dilayani per Sub Bagian
-        // Alur Relasi: sub_bagian -> data_pegawai -> tamu
-        $grafikData = SubBagian::select('sub_bagian.nama_sub_bagian')
-            ->selectRaw('COUNT(tamu.id_tamu) as total_tamu')
-            ->leftJoin('data_pegawai', 'sub_bagian.id_sub_bagian', '=', 'data_pegawai.id_sub_bagian')
-            ->leftJoin('tamu', 'data_pegawai.id_pegawai', '=', 'tamu.id_pegawai')
-            ->groupBy('sub_bagian.id_sub_bagian', 'sub_bagian.nama_sub_bagian')
+        // Tambahkan baris ini di DashboardController Anda
+        $tamuTerbaru = Tamu::with(['tujuan', 'pegawai'])
+            ->latest()
+            ->take(5)
             ->get();
 
         return view('admin.dashboard', compact(
-            'totalPelakuUsaha',
-            'totalInstansiPemerintah',
+            'tujuanChart',
+            'subBagianChart',
+            'statusChart',
             'totalTamu',
-            'totalTamuSelesai',
-            'totalTamuProses',
-            'totalPegawai',
-            'totalPimpinan',
-            'grafikData'
+            'tamuSelesai',
+            'tamuPending',
+            'tamuTerbaru'
         ));
     }
 }

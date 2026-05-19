@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('role_akses', function (Blueprint $table) {
             $table->id('id_role_akses');
             $table->string('nama_role', 50);
-            $table->text('deskripsi')->nullable();
             $table->timestamps();
         });
     }

@@ -15,6 +15,7 @@ class TujuanKonsultasi extends Model
         'is_active'
     ];
 
+    // relasi antar tabel
     public function tamu()
     {
         return $this->hasMany(Tamu::class, 'id_tujuan');

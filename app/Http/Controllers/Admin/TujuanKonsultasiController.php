@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 class TujuanKonsultasiController extends Controller
 {
+    // Fungsi untuk menampilkan halaman data tujuan konsultasi pada admin
     public function index()
     {
         $tujuan = TujuanKonsultasi::latest()->get();
@@ -15,11 +16,13 @@ class TujuanKonsultasiController extends Controller
         return view('admin.tujuan.index', compact('tujuan'));
     }
 
+    // Fungsi untuk menampilkan halaman tambah tujuan konsultasi pada admin
     public function create()
     {
         return view('admin.tujuan.create');
     }
 
+    // Fungsi untuk melakukan tambah data tujuan konsultasi pada admin
     public function store(Request $request)
     {
         $request->validate([
@@ -35,6 +38,7 @@ class TujuanKonsultasiController extends Controller
             ->with('success', 'Data berhasil ditambahkan');
     }
 
+    // Fungsi untuk menampilkan halaman edit tujuan konsultasi pada admin
     public function edit($id)
     {
         $tujuan = TujuanKonsultasi::findOrFail($id);
@@ -42,6 +46,7 @@ class TujuanKonsultasiController extends Controller
         return view('admin.tujuan.edit', compact('tujuan'));
     }
 
+    // Fungsi untuk melakukan update data tujuan konsultasi pada admin
     public function update(Request $request, $id)
     {
         $tujuan = TujuanKonsultasi::findOrFail($id);
@@ -54,6 +59,7 @@ class TujuanKonsultasiController extends Controller
             ->with('success', 'Data berhasil diupdate');
     }
 
+    // Funsi untuk melakukan hapus data tujuan konsultasi pada admin
     public function destroy($id)
     {
         $tujuan = TujuanKonsultasi::findOrFail($id);
@@ -64,6 +70,7 @@ class TujuanKonsultasiController extends Controller
             ->with('success', 'Data berhasil dihapus');
     }
 
+    // Funsi untuk melakukan update status (aktif/nonaktif) tujuan konsultasi pada admin
     public function changeStatus($id)
     {
         $tujuan =

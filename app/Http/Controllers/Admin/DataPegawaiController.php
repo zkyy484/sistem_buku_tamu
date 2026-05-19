@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 
 class DataPegawaiController extends Controller
 {
+    // Fungsi untuk menampilkan halaman data pegawai pada admin
     public function index()
     {
         $pegawai = DataPegawai::with('subBagian')
@@ -21,6 +22,7 @@ class DataPegawaiController extends Controller
         return view('admin.pegawai.index', compact('pegawai'));
     }
 
+    // Fungsi untuk menampilkan halaman tambah pegawai pada admin
     public function create()
     {
         // $subBagian = SubBagian::all();
@@ -31,6 +33,7 @@ class DataPegawaiController extends Controller
             )->get();
 
         $roles = RoleAkses::whereIn('nama_role', [
+            'admin',
             'pegawai',
             'pimpinan'
         ])->get();
@@ -41,6 +44,7 @@ class DataPegawaiController extends Controller
         ));
     }
 
+    // Fungsi untuk menambahkan data pegawai pada admin
     public function store(Request $request)
     {
         $request->validate([
@@ -79,6 +83,7 @@ class DataPegawaiController extends Controller
             ->with('success', 'Data pegawai berhasil ditambahkan');
     }
 
+    // Fungsi untuk menampilkan halaman edit data pegawai pada admin
     public function edit($id)
     {
         $pegawai = DataPegawai::findOrFail($id);
@@ -91,6 +96,7 @@ class DataPegawaiController extends Controller
         ));
     }
 
+    // Fungsi untuk melakukan update data pegawai pada admin
     public function update(Request $request, $id)
     {
         $pegawai = DataPegawai::findOrFail($id);
@@ -109,6 +115,7 @@ class DataPegawaiController extends Controller
             ->with('success', 'Data berhasil diupdate');
     }
 
+    // Fungsi untuk melakukan hapus data pegawai pada admin 
     public function destroy($id)
     {
         $pegawai = DataPegawai::findOrFail($id);
@@ -122,6 +129,7 @@ class DataPegawaiController extends Controller
             ->with('success', 'Data berhasil dihapus');
     }
 
+    // Fungsi untuk melakukan update status (aktif/nonaktif) data pegawai pada admin
     public function changeStatus($id)
     {
         $pegawai = DataPegawai::findOrFail($id);

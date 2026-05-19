@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('sub_bagian', function (Blueprint $table) {
             $table->id('id_sub_bagian');
             $table->string('nama_sub_bagian', 100);
-            $table->text('deskripsi')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });

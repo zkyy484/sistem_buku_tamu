@@ -1,7 +1,7 @@
-@extends('pegawai.layouts.app')
+@extends('admin.layouts.admin')
 
 @section('content')
-    <!-- CSS Tambahan Khusus untuk Elemen Data Konsultasi Pegawai -->
+    <!-- CSS Tambahan Khusus untuk Elemen Data Konsultasi -->
     <style>
         .content-card {
             background-color: #FFFFFF;
@@ -47,7 +47,7 @@
             font-weight: 500;
         }
 
-        /* Action Bar: Search Input Inline */
+        /* Action Bar: Search Input inline */
         .action-wrapper {
             background-color: #f8fafc;
             padding: 16px 20px;
@@ -95,7 +95,7 @@
             background-color: #05133b;
         }
 
-        /* Modern Table Design (Penyelarasan Kiri untuk TH & TD) */
+        /* Modern Table Design (Penyelarasan TH & TD Sejajar Kiri) */
         .table-responsive {
             overflow-x: auto;
             width: 100%;
@@ -129,7 +129,7 @@
             background-color: #f9fbfd;
         }
 
-        /* Badge Status Layanan */
+        /* Badge Status */
         .badge-status {
             display: inline-block;
             padding: 4px 10px;
@@ -143,7 +143,7 @@
         .status-proses { background-color: #feefe3; color: #b06000; }
         .status-selesai { background-color: #e6f4ea; color: #137333; }
 
-        /* Tombol Link Detail */
+        /* Tombol Aksi */
         .btn-detail {
             display: inline-block;
             background-color: #ffffff;
@@ -173,22 +173,22 @@
     </style>
 
     <div class="content-card">
-        <!-- Bagian Judul dan Penghitung Data -->
+        <!-- Kepala Halaman Konten -->
         <div class="content-title-area">
-            <h3>Data Konsultasi Tamu</h3>
+            <h3>Data Konsultasi</h3>
             <div class="data-count-badge">
                 Jumlah Data: <strong>{{ $konsultasi->count() }}</strong>
             </div>
         </div>
 
-        <!-- Notifikasi Berhasil Terkirim -->
+        <!-- Notifikasi Berhasil -->
         @if (session('success'))
             <div class="alert-success">
                 🛈 {{ session('success') }}
             </div>
         @endif
 
-        <!-- Filter Pencarian Data Konsultasi -->
+        <!-- Filter Pencarian Data -->
         <div class="action-wrapper">
             <form method="GET" class="search-form">
                 <input type="text" name="search" class="search-input" placeholder="Cari nama atau kode tiket..." value="{{ request('search') }}">
@@ -198,16 +198,15 @@
             </form>
         </div>
 
-        <!-- Tabel Data Utama -->
+        <!-- Struktur Tabel Data -->
         <div class="table-responsive">
             <table class="modern-table">
                 <thead>
                     <tr>
                         <th style="width: 60px;">No</th>
                         <th>Kode Tiket</th>
-                        <th>Nama Tamu</th>
+                        <th>Nama Lengkap</th>
                         <th>Tujuan Konsultasi</th>
-                        <th>Nama Pegawai</th>
                         <th style="width: 120px;">Status</th>
                         <th style="width: 100px; text-align: center;">Aksi</th>
                     </tr>
@@ -219,7 +218,6 @@
                             <td><span style="color: #081F5C; font-weight: 600;">{{ $item->kode_tiket }}</span></td>
                             <td><strong>{{ $item->nama_lengkap }}</strong></td>
                             <td>{{ $item->tujuan->tujuan_konsultasi }}</td>
-                            <td><strong>{{ $item->pegawai->nama_pegawai ?? '-' }}</strong></td>
                             <td>
                                 @if($item->status == 'Belum Eskalasi')
                                     <span class="badge-status status-baru">Belum Eskalasi</span>
@@ -230,15 +228,15 @@
                                 @endif
                             </td>
                             <td style="text-align: center;">
-                                <a href="/pegawai/konsultasi/{{ $item->id_tamu }}" class="btn-detail">
+                                <a href="/admin/konsultasi/{{ $item->id_tamu }}" class="btn-detail">
                                     Detail
-                                </a >
+                                </a>
                             </td>
                         </tr>
                     @empty
                         <tr>
                             <td colspan="6" style="text-align: center; padding: 30px; color: #999999;">
-                                Tidak ada data konsultasi tamu yang ditemukan.
+                                Tidak ada data konsultasi yang ditemukan.
                             </td>
                         </tr>
                     @endforelse

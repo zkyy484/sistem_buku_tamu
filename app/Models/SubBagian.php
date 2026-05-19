@@ -16,6 +16,7 @@ class SubBagian extends Model
         'is_active'
     ];
 
+    // relasi antar tabel
     public function pegawai()
     {
         return $this->hasMany(DataPegawai::class, 'id_sub_bagian');

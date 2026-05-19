@@ -44,10 +44,10 @@ return new class extends Migration {
             $table->unsignedBigInteger('id_pegawai')->nullable();
 
             $table->enum('status', [
-                'Baru',
-                'Diproses',
+                'Belum Eskalasi',
+                'Eskalasi',
                 'Selesai'
-            ])->default('Baru');
+            ])->default('Belum Eskalasi');
 
             $table->string('pdf_path')->nullable();
 

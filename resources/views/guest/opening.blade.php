@@ -12,7 +12,7 @@
             background-color: #D0E3FF;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            padding: 20px;
+            padding: 12px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -41,15 +41,15 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            margin: 0 auto 24px auto;
+            margin: 0 auto 20px auto;
             overflow: hidden;
             /* Memastikan gambar tetap bulat mengikuti container */
         }
 
         .icon-container img {
-            width: 85%;
+            width: 100%;
             /* Menjaga logo tetap presisi di dalam lingkaran */
-            height: 85%;
+            height: 100%;
             object-fit: contain;
         }
 

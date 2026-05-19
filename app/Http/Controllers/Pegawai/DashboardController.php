@@ -3,84 +3,52 @@
 namespace App\Http\Controllers\Pegawai;
 
 use App\Http\Controllers\Controller;
+use App\Models\SubBagian;
 use App\Models\Tamu;
+use App\Models\TujuanKonsultasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
+    // fungsi untuk menampilkan halaman dashboard pada pegawai
     public function index()
     {
-        // return view('pegawai.dashboard');
+        // 1. Akumulasi Tamu berdasarkan Tujuan Konsultasi
+        $tujuanChart = TujuanKonsultasi::withCount('tamu')->get();
 
-        $pegawaiId = auth()->user()->id_pegawai;
+        // 2. Akumulasi Tamu berdasarkan Sub Bagian (Pegawai)
+        $subBagianChart = SubBagian::withCount([
+            'pegawai as total_tamu' => function ($query) {
+                $query->join('tamu', 'data_pegawai.id_pegawai', '=', 'tamu.id_pegawai');
+            }
+        ])->get();
 
-        // total data ditangani pegawai login
-        $totalDitangani = Tamu::where(
-            'id_pegawai',
-            $pegawaiId
-        )->count();
-
-
-        // total per status
-        $baru = Tamu::where(
-            'id_pegawai',
-            $pegawaiId
-        )
-            ->where('status', 'Baru')
-            ->count();
-
-        $diproses = Tamu::where(
-            'id_pegawai',
-            $pegawaiId
-        )
-            ->where('status', 'Diproses')
-            ->count();
-
-        $selesai = Tamu::where(
-            'id_pegawai',
-            $pegawaiId
-        )
-            ->where('status', 'Selesai')
-            ->count();
-
-
-        // grafik sub bagian
-        $subBagian = Tamu::join(
-            'data_pegawai',
-            'tamu.id_pegawai',
-            '=',
-            'data_pegawai.id_pegawai'
-        )
-            ->join(
-                'sub_bagian',
-                'data_pegawai.id_sub_bagian',
-                '=',
-                'sub_bagian.id_sub_bagian'
-            )
-            ->select(
-                'sub_bagian.nama_sub_bagian',
-                DB::raw('count(*) as total')
-            )
-            ->groupBy(
-                'sub_bagian.nama_sub_bagian'
-            )
+        // 3. Akumulasi Persentase BERDASARKAN STATUS TAMU
+        // Query ini menghitung total tamu per status yang ada di database
+        $statusChart = Tamu::select('status', DB::raw('count(*) as total'))
+            ->groupBy('status')
             ->get();
 
-        $belumDitangani = Tamu::whereNull(
-            'id_pegawai'
-        )->count();
+        // 4. Counter Tambahan Info Box
+        $totalTamu = Tamu::count();
+        $tamuSelesai = Tamu::where('status', 'Selesai')->count(); // Disesuaikan dengan status selesai
+        $tamuPending = Tamu::whereIn('status', ['Belum Eskalasi'])->count();
 
-        return view(
-            'pegawai.dashboard',
-            compact(
-                'totalDitangani',
-                'baru',
-                'diproses',
-                'selesai',
-                'subBagian',
-                'belumDitangani'
-            )
-        );
+        // Tambahkan baris ini di DashboardController Anda
+        $tamuTerbaru = Tamu::with(['tujuan', 'pegawai'])
+            ->latest()
+            ->take(5)
+            ->get();
+
+        return view('pegawai.dashboard', compact(
+            'tujuanChart',
+            'subBagianChart',
+            'statusChart',
+            'totalTamu',
+            'tamuSelesai',
+            'tamuPending',
+            'tamuTerbaru'
+        ));
     }
 }

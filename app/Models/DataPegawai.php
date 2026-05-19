@@ -21,6 +21,7 @@ class DataPegawai extends Model
         'is_active'
     ];
 
+    // relasi antar tabel
     public function subBagian()
     {
         return $this->belongsTo(SubBagian::class, 'id_sub_bagian');

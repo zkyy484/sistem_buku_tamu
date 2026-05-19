@@ -145,7 +145,8 @@
             padding: 14px 16px;
             border-bottom: 1px solid #eeeeee;
             color: #333333;
-            vertical-align: top; /* Cocok untuk teks deskripsi panjang seperti solusi/masalah */
+            vertical-align: top;
+            /* Cocok untuk teks deskripsi panjang seperti solusi/masalah */
             text-align: left;
         }
 
@@ -170,15 +171,27 @@
             text-align: center;
         }
 
-        .status-baru { background-color: #e8f0fe; color: #1a73e8; }
-        .status-proses { background-color: #feefe3; color: #b06000; }
-        .status-selesai { background-color: #e6f4ea; color: #137333; }
+        .status-baru {
+            background-color: #e8f0fe;
+            color: #1a73e8;
+        }
+
+        .status-proses {
+            background-color: #feefe3;
+            color: #b06000;
+        }
+
+        .status-selesai {
+            background-color: #e6f4ea;
+            color: #137333;
+        }
 
         @media (max-width: 768px) {
             .filter-form {
                 flex-direction: column;
                 align-items: stretch;
             }
+
             .btn-filter {
                 width: 100%;
             }
@@ -188,7 +201,7 @@
     <div class="content-card">
         <!-- Kepala Halaman Konten -->
         <div class="content-title-area">
-            <h3>Laporan Konsultasi</h3>
+            <h3>Laporan Pengunjung</h3>
         </div>
 
         <!-- Blok Filter & Export (Satu Area) -->
@@ -220,7 +233,8 @@
             </form>
 
             <!-- Tombol Cetak PDF -->
-            <a href="/admin/laporan/pdf?tanggal_awal={{ request('tanggal_awal') }}&tanggal_akhir={{ request('tanggal_akhir') }}&status={{ request('status') }}" class="btn-pdf">
+            <a href="/admin/laporan/pengunjung/pdf?tanggal_awal={{ request('tanggal_awal') }}&tanggal_akhir={{ request('tanggal_akhir') }}&status={{ request('status') }}"
+                class="btn-pdf">
                 📄 Export Dokumen PDF
             </a>
         </div>
@@ -231,31 +245,29 @@
                 <thead>
                     <tr>
                         <th style="width: 50px;">No</th>
-                        <th>No Tiket</th>
-                        <th>Tanggal</th>
                         <th>Nama Lengkap</th>
-                        <th>Permasalahan</th>
-                        <th>Solusi</th>
-                        <th>Nama Pegawai</th>
-                        <th style="width: 100px;">Status</th>
+                        <th>NIK</th>
+                        <th>Email</th>
+                        <th>Nomor</th>
+                        <th>Perusahaan</th>
+                        <th>Status</th>
+
                     </tr>
                 </thead>
                 <tbody>
                     @forelse ($laporan as $item)
                         <tr>
                             <td><strong>{{ $loop->iteration }}</strong></td>
-                            <td><span style="color: #081F5C; font-weight: 600;">{{ $item->kode_tiket }}</span></td>
-                            <td style="white-space: nowrap;">{{ date('d-m-Y', strtotime($item->tanggal_konsultasi)) }}</td>
+
                             <td><strong>{{ $item->nama_lengkap }}</strong></td>
+
+                            <td>{{ $item->nik }}</td>
+                            <td>{{ $item->email }}</td>
+                            <td>{{ $item->no_hp }}</td>
+                            <td>{{ $item->nama_perusahaan_instansi }}</td>
+
                             <td>
-                                <div class="text-truncate-custom">{{ $item->permasalahan }}</div>
-                            </td>
-                            <td>
-                                <div class="text-truncate-custom">{{ $item->solusi ?? '-' }}</div>
-                            </td>
-                            <td>{{ $item->pegawai->nama_pegawai ?? '-' }}</td>
-                            <td>
-                                @if($item->status == 'Belum Eskalasi')
+                                @if ($item->status == 'Belum Eskalasi')
                                     <span class="badge-status status-baru">Belum Eskalasi</span>
                                 @elseif($item->status == 'Eskalasi')
                                     <span class="badge-status status-proses">Eskalasi</span>

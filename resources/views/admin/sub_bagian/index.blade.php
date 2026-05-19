@@ -170,8 +170,7 @@
                     <tr>
                         <th style="width: 50px;">No</th>
                         <th>Nama Sub Bagian</th>
-                        <th>Deskripsi</th>
-                        <th style="width: 140px;">Status</th>
+                        <th>Status</th>
                         <th style="width: 150px;">Aksi</th>
                     </tr>
                 </thead>
@@ -180,8 +179,6 @@
                         <tr>
                             <td><strong>{{ $loop->iteration }}</strong></td>
                             <td><strong>{{ $item->nama_sub_bagian }}</strong></td>
-                            <td>{{ $item->deskripsi }}</td>
-
                             <!-- Kolom Status Toggle -->
                             <td>
                                 <form action="/admin/sub-bagian-status/{{ $item->id_sub_bagian }}" method="POST" class="inline-form">

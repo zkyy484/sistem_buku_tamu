@@ -15,6 +15,7 @@ class RoleAkses extends Model
         'deskripsi'
     ];
 
+    // relasi antar tabel
     public function users()
     {
         return $this->hasMany(User::class, 'id_role_akses');

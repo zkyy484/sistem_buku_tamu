@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 
 class TamuController extends Controller
 {
+    // fungsi untuk menapilkan halaman pengisian konsultasi pada tamu
     public function index()
     {
         $tujuan =
@@ -20,10 +21,12 @@ class TamuController extends Controller
         return view('guest.index', compact('tujuan'));
     }
 
+    // fungsi untuk menampilkan halaman opening/awal pada tamu
     public function opening() {
         return view('guest.opening');
     }
 
+    // fungsi untuk menambahkan data tamu/konsultasi pada tamu
     public function store(Request $request)
     {
         $request->validate([
@@ -55,7 +58,7 @@ class TamuController extends Controller
             'permasalahan' => $request->permasalahan,
             'ttd_tamu' => $request->ttd_tamu,
             'ttd_pegawai' => $request->ttd_pegawai,
-            'status' => 'Baru'
+            'status' => 'Belum Eskalasi'
         ]);
 
         return redirect('/buku-tamu')

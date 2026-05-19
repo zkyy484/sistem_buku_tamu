@@ -11,24 +11,23 @@ class RoleAksesSeeder extends Seeder
     /**
      * Run the database seeds.
      */
+
+    // fungsi untuk menambahkan data role akses pada tabel role_akses
     public function run(): void
     {
         DB::table('role_akses')->insert([
             [
                 'nama_role' => 'admin',
-                'deskripsi' => 'Administrator',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'nama_role' => 'pegawai',
-                'deskripsi' => 'Pegawai',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'nama_role' => 'pimpinan',
-                'deskripsi' => 'Pimpinan',
                 'created_at' => now(),
                 'updated_at' => now(),
             ]

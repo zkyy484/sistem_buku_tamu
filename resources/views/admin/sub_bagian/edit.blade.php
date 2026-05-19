@@ -128,11 +128,6 @@
                 <input type="text" id="nama_sub_bagian" name="nama_sub_bagian" value="{{ $subBagian->nama_sub_bagian }}" placeholder="Contoh: Tata Usaha, Keuangan" required autocomplete="off">
             </div>
 
-            <!-- Input Deskripsi -->
-            <div class="form-group">
-                <label for="deskripsi">Deskripsi</label>
-                <textarea id="deskripsi" name="deskripsi" rows="5" placeholder="Tuliskan deskripsi tugas atau fungsi sub bagian di sini...">{{ $subBagian->deskripsi }}</textarea>
-            </div>
 
             <!-- Tombol Aksi -->
             <div class="btn-container">

@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistem Buku Tamu</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body class="bg-[#D0E3FF] min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 font-sans">

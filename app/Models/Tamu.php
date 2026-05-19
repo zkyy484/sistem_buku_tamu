@@ -31,6 +31,7 @@ class Tamu extends Model
         'email_sent_at'
     ];
 
+    // relasi antar tabel
     public function tujuan()
     {
         return $this->belongsTo(TujuanKonsultasi::class, 'id_tujuan');

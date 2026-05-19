@@ -7,6 +7,7 @@ use App\Models\Tamu;
 
 class LaporanController extends Controller
 {
+    // fungsi untuk menampilkan halaman laporan konsultasi pada admin
     public function index()
     {
         $laporan = Tamu::with([
